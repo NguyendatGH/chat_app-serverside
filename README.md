@@ -83,3 +83,7 @@ To interact with your database using a visual tool, run Prisma Studio:
 Prisma Studio provides an easy way to explore and manipulate the data in your PostgreSQL database.
 
 Make sure you have fulfilled all the requirements mentioned above before running these commands.
+
+
+
+stop postgresql ```sudo systemctl stop postgresql```

@@ -13,3 +13,7 @@ export const authRequest = yup.object({
     .required(),
 });
 
+export const createMessageRequest = yup.object({
+  conversationId: yup.number().required(),
+  text: yup.string().required(),
+});

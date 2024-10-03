@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ObjectSchema, ValidationError } from "yup";
 import { generic500Error } from "../utils/constants";
-import { error } from "console";
 
 export const validate =
   (schema: ObjectSchema<any>) =>
