@@ -2,7 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import AuthController from "../controllers/auth";
 import { validate } from "../middlewares/validate";
-import { authRequest } from "../validators/auth";
+import { authRequest } from "../validators";
 
 const router = express.Router();
 const prisma = new PrismaClient();

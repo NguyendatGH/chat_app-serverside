@@ -17,3 +17,4 @@ export const createMessageRequest = yup.object({
   conversationId: yup.number().required(),
   text: yup.string().required(),
 });
+
