@@ -33,14 +33,14 @@ io.on("connection", (socket) => {
   const webSocket = new WebSocket(socket, prisma);
   const myID = socket.handshake.query.userId;
 
-  webSocket.connection();
+  webSocket.connection(myID);
   console.log(socket.id);
 
-  socket.on('login', () => webSocket.login());
-  socket.on('logout', () => webSocket.logout());
-  socket.on('message', () => webSocket.message());
-  socket.on('disconnect', () => webSocket.disconnection());
-  socket.on('conversationChange', () => webSocket.conversationChange());
+  socket.on('login', (userId: string) => webSocket.login(userId));
+  socket.on('logout', (userId: string) => webSocket.logout(userId));
+  socket.on('message', ({message, conversation, myUserId}) => webSocket.message(message, conversation, myUserId));
+  socket.on('disconnect', (reason) => webSocket.disconnection(reason, myID));
+  socket.on('conversationChange', ({conversation, myUserId}) => webSocket.conversationChange(conversation, myUserId));
 });
 
 server.listen(port, () => {

@@ -6,7 +6,6 @@ declare global {
   }
 }
 
-import { Request } from "express";
 export interface DecodedUser {
   id: number;
   username: string;
