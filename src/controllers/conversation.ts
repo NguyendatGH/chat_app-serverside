@@ -10,6 +10,10 @@ class ConversationController {
       const myId = req.user?.id as number;
       const conversationId = Number(req.params?.id);
 
+      console.log("---be logggin--- at conversation controller." )
+      console.log("user id: ", myId);
+      console.log("conversationId", conversationId);
+
       if (typeof conversationId !== "number") {
         res.status(400).json({ message: "conversation id is not a number!" });
         return;
@@ -21,12 +25,16 @@ class ConversationController {
         },
         include: { messages: { orderBy: { createdAt: "asc" } } },
       });
+      console.log("conversation/ be/ controller: ", conversation)
+
       if (!conversation) {
+        console.log("cannot find to conversation / conversation controller / be")
         res.status(400).json({ message: "could not find the conversation" });
         return;
       }
 
       if (!this.isMyConversation(myId, conversation)) {
+        console.log("cannot access to conversation / conversation controller / be")
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
@@ -39,8 +47,9 @@ class ConversationController {
   async createMessage(req: Request, res: Response) : Promise<void>  {
     try {
       const myId = req.user?.id as number;
-      const { text, conversationId }: { text: string; conversationId: number } =
-        req.body;
+      const { text, conversationId }: { text: string; conversationId: number } = req.body;
+      console.log("BE/controller/ Received text from client:", text);
+
 
       const conversation = await this.prisma.conversation.findUnique({
         where: {
@@ -48,10 +57,12 @@ class ConversationController {
         },
       });
       if (!conversation) {
+        console.log("be/ controller/ conversation/ not found conversation")
         res.status(404).json({ message: "not found the conversation" });
         return;
       }
       if (!this.isMyConversation(myId, conversation)) {
+        console.log("be/ controller/ conversation/ cannot access! conversation")
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
@@ -63,7 +74,7 @@ class ConversationController {
           conversationId,
         },
       });
-
+      console.log("new message: ", newMessage);
       res.status(201).json({ message: newMessage });
       return;
 

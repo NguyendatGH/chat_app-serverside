@@ -8,11 +8,12 @@ class ContactController {
   async getContacts(req: Request, res: Response): Promise<void> {
     try {
       const MyId = req.user?.id as number;
+      console.log("get contact / log from Contact controller:  ", MyId)
       const contacts = await this.prisma.contact.findMany({
         where: {userId: MyId},
         orderBy: {createdAt: "asc"},
       });
-
+      console.log("contacst: ", contacts)
        res.status(200).json({contacts});
     } catch (error) {
        generic500Error(res, error);
@@ -26,7 +27,7 @@ class ContactController {
 
       // check if there is a user with the given username
       const relatedUser = await this.prisma.user.findUnique({where: {username}});
-
+      console.log("relatedUser: ", relatedUser);
       if (!relatedUser) {
        res.status(404).json({message: "Could not find related contact"});
        return;
@@ -44,6 +45,7 @@ class ContactController {
       });
 
       if (isContactExists) {
+         console.log("contact exits")
          res.status(400).json({message: "Contact already exists"});
          return;
       }
@@ -53,6 +55,8 @@ class ContactController {
         where: {participants: {hasEvery: [MyId, relatedUser.id]}},
       });
 
+      console.log("found conversation/ be: ",foundConversation)
+
       // this flow is going to run if conversation exists
       if (foundConversation) {
         const contact = await this.newContact({
@@ -61,7 +65,7 @@ class ContactController {
           photo: relatedUser.photo,
           conversationId: foundConversation.id,
         });
-
+        console.log("new conversastion");
          res.status(201).json({message: "New contact created", contact});
          return;
       }

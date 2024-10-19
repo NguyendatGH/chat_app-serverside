@@ -9,6 +9,7 @@ class WebSocket {
 
   connection(userId: HandshakeUserId) {
     if (userId && userId !== "undefined") {
+      console.log("log from socket, userId handsake ", userId);
       onlineUser.set(+userId, { socketRef: this.socket.id });
     }
   }
@@ -34,9 +35,14 @@ class WebSocket {
     const myUser = await this.prisma.user.findUnique({
       where: { id: myUserId },
     });
+
+    console.log("user send message : ", myUser);
     const newMessage = await this.prisma.message.create({
       data: { ...message },
     });
+
+    console.log(newMessage);
+
     const filteredMyUserId = conversation.participants.filter(
       (id: number) => id !== myUserId
     );
