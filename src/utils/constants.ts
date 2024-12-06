@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 
 export const generic500Error = (res: Response, error: unknown ) => {
     console.log(error);

@@ -13,7 +13,7 @@ class ContactController {
         where: {userId: MyId},
         orderBy: {createdAt: "asc"},
       });
-      console.log("contacst: ", contacts)
+      console.log("contacts: ", contacts)
        res.status(200).json({contacts});
     } catch (error) {
        generic500Error(res, error);
@@ -28,7 +28,9 @@ class ContactController {
       // check if there is a user with the given username
       const relatedUser = await this.prisma.user.findUnique({where: {username}});
       console.log("relatedUser: ", relatedUser);
+      
       if (!relatedUser) {
+        console.log("could not find related contact")
        res.status(404).json({message: "Could not find related contact"});
        return;
       }

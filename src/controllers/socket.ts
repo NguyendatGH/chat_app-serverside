@@ -114,6 +114,7 @@ class WebSocket {
     });
 
     if (!myContact) {
+      console.log("socket/ be/ mycontact: ", myContact);
       return;
     }
 

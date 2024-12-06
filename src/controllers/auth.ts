@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import { generic500Error } from "../utils/constants";
 
-const jwtSecret = process.env.JWT_SECRET as string;
+const jwtSecret = process.env.JWT_SECRET ;
 class AuthController {
   constructor(private prisma: PrismaClient) {}
 
@@ -55,12 +55,12 @@ class AuthController {
           photo: this.generateRandomAvatar(),
         },
       });
-     
+
       const token = await this.generateJwt({
         id: createUser.id,
         username: createUser.username,
       });
-      createUser.password = '';
+      createUser.password = "";
       return res.status(201).json({ user: createUser, jwt: token });
     } catch (error) {
       generic500Error(res, error);
@@ -68,7 +68,7 @@ class AuthController {
   }
   async logout(req: Request, res: Response) {
     try {
-      return res.status(200).json({message: 'Logged out!'});
+      return res.status(200).json({ message: "Logged out!" });
     } catch (error) {
       generic500Error(res, error);
     }
@@ -79,7 +79,7 @@ class AuthController {
   }
 
   async generateJwt({ id, username }: { id: number; username: string }) {
-    return jwt.sign({ id, username }, jwtSecret, { expiresIn: "86400s" });
+    return jwt.sign({ id, username }, jwtSecret as string, { expiresIn: "86400s" });
   }
 
   async comparePassWords({

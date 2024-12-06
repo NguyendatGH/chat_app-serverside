@@ -38,7 +38,7 @@ class ConversationController {
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
-      res.status(200).json(conversation);
+      res.status(200).json({conversation});
       return ;
     } catch (error) {
       generic500Error(res, error);
