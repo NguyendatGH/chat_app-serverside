@@ -9,7 +9,7 @@ class WebSocket {
 
   connection(userId: HandshakeUserId) {
     if (userId && userId !== "undefined") {
-      console.log("log from socket, userId handsake ", userId);
+      // console.log("log from socket, userId handsake ", userId);
       onlineUser.set(+userId, { socketRef: this.socket.id });
     }
   }
@@ -36,12 +36,12 @@ class WebSocket {
       where: { id: myUserId },
     });
 
-    console.log("user send message : ", myUser);
+    // console.log("user send message : ", myUser);
     const newMessage = await this.prisma.message.create({
       data: { ...message },
     });
 
-    console.log(newMessage);
+    // console.log("new message: ",newMessage);
 
     const filteredMyUserId = conversation.participants.filter(
       (id: number) => id !== myUserId
@@ -114,7 +114,7 @@ class WebSocket {
     });
 
     if (!myContact) {
-      console.log("socket/ be/ mycontact: ", myContact);
+      // console.log("socket/ be/ mycontact: ", myContact);
       return;
     }
 

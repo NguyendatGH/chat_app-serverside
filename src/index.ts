@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
   console.log(`new connection : ${socket.id}, Transport type: ${transportType}`)
 
   webSocket.connection(myID);
-  console.log(socket.id);
+  console.log("socketid: ", socket.id);
 
   socket.on("login", async (userId: string) => {
     if (userId) {

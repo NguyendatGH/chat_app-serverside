@@ -10,6 +10,7 @@ const userController = new UserController(prisma);
 router.get("/user", verifyToken(), (req, res) =>
   userController.getUser(req, res)
 );
+
 router.get("/user/all", (req, res) => userController.getAll(req, res));
 router.delete("/user/all", (req, res) => userController.deleteAll(req, res));
 
