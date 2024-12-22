@@ -36,12 +36,10 @@ class WebSocket {
       where: { id: myUserId },
     });
 
-    // console.log("user send message : ", myUser);
     const newMessage = await this.prisma.message.create({
       data: { ...message },
     });
 
-    // console.log("new message: ",newMessage);
 
     const filteredMyUserId = conversation.participants.filter(
       (id: number) => id !== myUserId
@@ -114,7 +112,6 @@ class WebSocket {
     });
 
     if (!myContact) {
-      // console.log("socket/ be/ mycontact: ", myContact);
       return;
     }
 

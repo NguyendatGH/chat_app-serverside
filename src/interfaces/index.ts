@@ -10,4 +10,3 @@ export interface DecodedUser {
   id: number;
   username: string;
 }
-//http://localhost:3000

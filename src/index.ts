@@ -23,7 +23,7 @@ app.use("/api", [authRouter, contactRoutes, conversationRoutes]);
 
 const io = new Server(server, {
   cors: {
-    origin:  ["http://localhost:3000", "http://127.0.0.1:3000"], // react running on this port
+    origin:  ["http://localhost:3000", "http://127.0.0.1:3000"], // react-vite port
     credentials: true,
   },
 });
@@ -48,7 +48,8 @@ io.on("connection", (socket) => {
 
   socket.on("logout", (userId: string) => webSocket.logout(userId));
   socket.on("message", ({ message, conversation, myUserId }) => {
-    console.log("message");
+    console.log("myUserId: ",myUserId);
+    console.log("message", message);
     webSocket.message(message, conversation, myUserId);
   });
 

@@ -48,7 +48,6 @@ class ConversationController {
     try {
       const myId = req.user?.id as number;
       const { text, conversationId }: { text: string; conversationId: number } = req.body;
-      // console.log("BE/controller/ Received text from client:", text);
 
 
       const conversation = await this.prisma.conversation.findUnique({
@@ -57,12 +56,10 @@ class ConversationController {
         },
       });
       if (!conversation) {
-        // console.log("be/ controller/ conversation/ not found conversation")
         res.status(404).json({ message: "not found the conversation" });
         return;
       }
       if (!this.isMyConversation(myId, conversation)) {
-        // console.log("be/ controller/ conversation/ cannot access! conversation")
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
@@ -74,7 +71,6 @@ class ConversationController {
           conversationId,
         },
       });
-      // console.log("new message: ", newMessage);
       res.status(201).json({ message: newMessage });
       return;
 
