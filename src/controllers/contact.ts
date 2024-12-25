@@ -117,6 +117,27 @@ class ContactController {
       },
     });
   }
+
+  async deleteContact(req: Request, res: Response) : Promise<void>{
+    try{
+      const MyId = req.user?.id as number;
+      const {username} : { username: string} = req.body;
+
+      const contact = await this.prisma.contact.findFirst({
+        where: { userId : MyId, username},
+      });
+      if(!contact){
+        res.status(404).json({message: "Contact not found"});
+      };
+      await this.prisma.contact.delete({
+        where: {id : contact?.id},
+      });
+
+      res.status(200).json({ message: "Contact deleted successfully" });
+    }catch(error){
+      generic500Error(res, error);
+    }
+  }
 }
 
 export default ContactController;

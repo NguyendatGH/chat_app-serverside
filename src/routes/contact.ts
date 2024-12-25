@@ -12,6 +12,7 @@ router.get(`${baseUrl}`, verifyToken(), (req, res) => contactController.getConta
 );
 router.post(`${baseUrl}`, verifyToken(), (req, res) => contactController.createContact(req, res)
 );
+router.delete(`${baseUrl}`, verifyToken(), (req, res) => contactController.deleteContact(req, res));
 
 export default router;
  
