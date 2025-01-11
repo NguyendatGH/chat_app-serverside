@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { generic500Error } from "../utils/constants";
 
 const jwtSecret = process.env.JWT_SECRET ;
-console.log(jwtSecret)
+
 class AuthController {
   constructor(private prisma: PrismaClient) {}
 

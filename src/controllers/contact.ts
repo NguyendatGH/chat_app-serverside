@@ -8,12 +8,10 @@ class ContactController {
   async getContacts(req: Request, res: Response): Promise<void> {
     try {
       const MyId = req.user?.id as number;
-      // console.log("get contact / log from Contact controller:  ", MyId)
       const contacts = await this.prisma.contact.findMany({
         where: {userId: MyId},
         orderBy: {createdAt: "asc"},
       });
-      // console.log("contacts: ", contacts)
        res.status(200).json({contacts});
     } catch (error) {
        generic500Error(res, error);

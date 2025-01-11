@@ -5,14 +5,10 @@ import { generic500Error } from "../utils/constants";
 class ConversationController {
   constructor(private prisma: PrismaClient) {}
 
-  async getConversation(req: Request, res: Response) :Promise<void>  {
+  async getConversation(req: Request, res: Response): Promise<void> {
     try {
       const myId = req.user?.id as number;
       const conversationId = Number(req.params?.id);
-
-      console.log("---be logggin--- at conversation controller." )
-      console.log("user id: ", myId);
-      console.log("conversationId", conversationId);
 
       if (typeof conversationId !== "number") {
         res.status(400).json({ message: "conversation id is not a number!" });
@@ -25,30 +21,31 @@ class ConversationController {
         },
         include: { messages: { orderBy: { createdAt: "asc" } } },
       });
-      console.log("conversation/ be/ controller: ", conversation)
+
 
       if (!conversation) {
-        console.log("cannot find to conversation / conversation controller / be")
+       
         res.status(400).json({ message: "could not find the conversation" });
         return;
       }
 
       if (!this.isMyConversation(myId, conversation)) {
-        console.log("cannot access to conversation / conversation controller / be")
+        
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
-      res.status(200).json({conversation});
-      return ;
+      res.status(200).json({ conversation });
+
+      return;
     } catch (error) {
       generic500Error(res, error);
     }
   }
-  async createMessage(req: Request, res: Response) : Promise<void>  {
+  async createMessage(req: Request, res: Response): Promise<void> {
     try {
       const myId = req.user?.id as number;
-      const { text, conversationId }: { text: string; conversationId: number } = req.body;
-
+      const { text, conversationId }: { text: string; conversationId: number } =
+        req.body;
 
       const conversation = await this.prisma.conversation.findUnique({
         where: {
@@ -73,9 +70,29 @@ class ConversationController {
       });
       res.status(201).json({ message: newMessage });
       return;
-
     } catch (error) {
       generic500Error(res, error);
+    }
+  }
+
+  async clearAllMessage(req: Request, res: Response) {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "Conversation ID is required." });
+    }
+
+    try {
+      const conversationId = parseInt(id, 10);
+
+      await this.prisma.message.deleteMany({
+        where: { conversationId },
+      });
+
+      res.status(200).json({ message: "Conversation reset successfully." });
+    } catch (error) {
+      console.error("Error resetting conversation:", error);
+      res.status(500).json({ message: "Failed to reset conversation." });
     }
   }
   isMyConversation(id: number, conversation: Conversation) {
