@@ -22,15 +22,12 @@ class ConversationController {
         include: { messages: { orderBy: { createdAt: "asc" } } },
       });
 
-
       if (!conversation) {
-       
         res.status(400).json({ message: "could not find the conversation" });
         return;
       }
 
       if (!this.isMyConversation(myId, conversation)) {
-        
         res.status(401).json({ message: "no access to this conversation!" });
         return;
       }
@@ -77,7 +74,7 @@ class ConversationController {
 
   async clearAllMessage(req: Request, res: Response) {
     const { id } = req.params;
-
+   
     if (!id) {
       return res.status(400).json({ message: "Conversation ID is required." });
     }
@@ -89,6 +86,11 @@ class ConversationController {
         where: { conversationId },
       });
 
+      await this.prisma.contact.updateMany({
+        where: { conversationId },
+        data: { lastMessage: "", unreadMessages: 0 },
+      });
+      console.log("Conversation reset successfully.");
       res.status(200).json({ message: "Conversation reset successfully." });
     } catch (error) {
       console.error("Error resetting conversation:", error);
